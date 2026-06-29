@@ -2,37 +2,37 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'dashboard.index')->name('dashboard');
+Route::view('/', 'backoffice.dashboard.index')->name('dashboard');
 
-Route::view('/hebergements', 'hebergements.index')
+Route::view('/hebergements', 'backoffice.hebergements.index')
     ->name('hebergements');
 
-Route::view('/reservations', 'reservations.index')
+Route::view('/reservations', 'backoffice.reservations.index')
     ->name('reservations');
 
-Route::view('/planning', 'planning.index')
+Route::view('/planning', 'backoffice.planning.index')
     ->name('planning');
 
-Route::view('/equipes', 'equipes.index')
+Route::view('/equipes', 'backoffice.equipes.index')
     ->name('equipes');
 
-Route::view('/messagerie', 'messagerie.index')
+Route::view('/messagerie', 'backoffice.messagerie.index')
     ->name('messagerie');
 
-Route::view('/statistiques', 'statistiques.index')
+Route::view('/statistiques', 'backoffice.statistiques.index')
     ->name('statistiques');
 
-Route::view('/avis', 'avis.index')
+Route::view('/avis', 'backoffice.avis.index')
     ->name('avis');
 
-Route::view('/entretiens', 'entretiens.index')
+Route::view('/entretiens', 'backoffice.entretiens.index')
     ->name('entretiens');
 
-Route::view('/support', 'support.index')
+Route::view('/support', 'backoffice.support.index')
     ->name('support');
 
-Route::view('/marketplace', 'marketplace.index')
+Route::view('/marketplace', 'backoffice.marketplace.index')
     ->name('marketplace');
 
-Route::view('/parametres', 'parametres.index')
+Route::view('/parametres', 'backoffice.parametres.index')
     ->name('parametres');
