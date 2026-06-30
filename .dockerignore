@@ -1,0 +1,12 @@
+.git
+vendor
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.*
+/public/build
+/public/hot
+/storage/*.key
+/storage/pail
