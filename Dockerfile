@@ -25,6 +25,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 
 WORKDIR /var/www/html
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 COPY composer.json composer.lock package.json package-lock.json ./
 
 RUN composer install --prefer-dist --no-interaction --no-scripts --no-progress --no-suggest \
@@ -37,5 +40,5 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 EXPOSE 8000 5173
 
-ENTRYPOINT ["/bin/sh", "/var/www/html/docker-entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["composer", "run", "dev"]
