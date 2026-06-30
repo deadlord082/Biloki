@@ -10,6 +10,8 @@ services:
       - '5173:5173'
     volumes:
       - ./:/var/www/html
+      - vendor:/var/www/html/vendor
+      - node_modules:/var/www/html/node_modules
     environment:
       APP_ENV: local
       APP_DEBUG: 'true'
@@ -54,3 +56,5 @@ services:
 volumes:
   mysql_data:
   redis_data:
+  vendor:
+  node_modules:
