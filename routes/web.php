@@ -36,3 +36,35 @@ Route::view('/marketplace', 'backoffice.marketplace.index')
 
 Route::view('/parametres', 'backoffice.parametres.index')
     ->name('parametres');
+
+Route::prefix('guest')
+    ->name('guest.')
+    ->group(function () {
+
+        Route::view('/', 'guest.index')->name('home');
+
+        Route::view('/directions', 'guest.directions')
+            ->name('directions');
+
+        Route::view('/access', 'guest.access')
+            ->name('access');
+
+        Route::view('/wifi', 'guest.wifi')
+            ->name('wifi');
+
+        Route::view('/messages', 'guest.messages')
+            ->name('messages');
+
+        Route::view('/accommodation', 'guest.accommodation')
+            ->name('accommodation');
+
+        Route::view('/arrival', 'guest.arrival')
+            ->name('arrival');
+
+        Route::view('/recommendations', 'guest.recommendations')
+            ->name('recommendations');
+
+        Route::view('/emergency', 'guest.emergency')
+            ->name('emergency');
+
+    });
