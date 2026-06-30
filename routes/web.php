@@ -39,15 +39,17 @@ Route::view('/marketplace', 'backoffice.marketplace.index')
 Route::view('/parametres', 'backoffice.parametres.index')
     ->name('parametres');
 
-Route::resource('services-additionnels', ServiceController::class)->names([
-    'index' => 'services-additionnels.index',
-    'show' => 'services-additionnels.show',
-    'create' => 'services-additionnels.create',
-    'store' => 'services-additionnels.store',
-    'edit' => 'services-additionnels.edit',
-    'update' => 'services-additionnels.update',
-    'destroy' => 'services-additionnels.destroy',
-]);
+Route::resource('services-additionnels', ServiceController::class)
+    ->parameters(['services-additionnels' => 'service'])
+    ->names([
+        'index' => 'services-additionnels.index',
+        'show' => 'services-additionnels.show',
+        'create' => 'services-additionnels.create',
+        'store' => 'services-additionnels.store',
+        'edit' => 'services-additionnels.edit',
+        'update' => 'services-additionnels.update',
+        'destroy' => 'services-additionnels.destroy',
+    ]);
 
 Route::get('/services-additionnels/statistics', [ServiceController::class, 'statistics'])->name('services-additionnels.statistics');
 

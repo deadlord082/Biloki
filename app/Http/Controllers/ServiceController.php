@@ -33,7 +33,10 @@ class ServiceController extends Controller
             'price' => 'required|numeric|min:0',
             'pricing_mode' => 'required|string',
             'category' => 'required|string',
+            'is_active' => 'required',
         ]);
+
+        $request->merge(['is_active' => $request->has('is_active') ?? true]);
 
         Service::create($request->all());
 
@@ -53,7 +56,10 @@ class ServiceController extends Controller
             'price' => 'required|numeric|min:0',
             'pricing_mode' => 'required|string',
             'category' => 'required|string',
+            'is_active' => 'required',
         ]);
+
+        $request->merge(['is_active' => $request->has('is_active') ?? true]);
 
         $service->update($request->all());
 

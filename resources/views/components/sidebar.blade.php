@@ -72,7 +72,7 @@ $menu = [
 
     [
         'label' => 'Services additionnels',
-        'route' => 'services-additionnels',
+        'route' => 'services-additionnels.index',
         'icon' => 'marketplace',
     ],
 
