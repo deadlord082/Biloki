@@ -37,6 +37,21 @@ Route::view('/marketplace', 'backoffice.marketplace.index')
 Route::view('/parametres', 'backoffice.parametres.index')
     ->name('parametres');
 
+Route::view('/services-additionnels', 'backoffice.services-additionnels.index')
+    ->name('services-additionnels');
+
+Route::view('/services-additionnels/{id}', 'backoffice.services-additionnels.show')
+    ->name('services-additionnels.show');
+
+Route::view('/services-additionnels/create', 'backoffice.services-additionnels.create')
+    ->name('services-additionnels.create');
+
+Route::view('/services-additionnels/{id}/edit', 'backoffice.services-additionnels.edit')
+    ->name('services-additionnels.edit');
+
+Route::view('/services-additionnels/statistics', 'backoffice.services-additionnels.statistics')
+    ->name('services-additionnels.statistics');
+
 Route::prefix('guest')
     ->name('guest.')
     ->group(function () {

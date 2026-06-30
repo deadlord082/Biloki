@@ -71,6 +71,12 @@ $menu = [
     ],
 
     [
+        'label' => 'Services additionnels',
+        'route' => 'services-additionnels',
+        'icon' => 'marketplace',
+    ],
+
+    [
         'label' => 'Paramètres',
         'route' => 'parametres',
         'icon' => 'settings',
