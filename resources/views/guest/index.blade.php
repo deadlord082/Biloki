@@ -66,6 +66,11 @@
             title="Votre logement"
             icon="home"/>
 
+        <x-guest.action-card
+            route="guest.services.index"
+            title="Services additionnels"
+            icon="wallet"/>
+
     </div>
 
     <div class="grid grid-cols-2 gap-3">

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\GuestServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'backoffice.dashboard.index')->name('dashboard');
@@ -37,20 +39,17 @@ Route::view('/marketplace', 'backoffice.marketplace.index')
 Route::view('/parametres', 'backoffice.parametres.index')
     ->name('parametres');
 
-Route::view('/services-additionnels', 'backoffice.services-additionnels.index')
-    ->name('services-additionnels');
+Route::resource('services-additionnels', ServiceController::class)->names([
+    'index' => 'services-additionnels.index',
+    'show' => 'services-additionnels.show',
+    'create' => 'services-additionnels.create',
+    'store' => 'services-additionnels.store',
+    'edit' => 'services-additionnels.edit',
+    'update' => 'services-additionnels.update',
+    'destroy' => 'services-additionnels.destroy',
+]);
 
-Route::view('/services-additionnels/{id}', 'backoffice.services-additionnels.show')
-    ->name('services-additionnels.show');
-
-Route::view('/services-additionnels/create', 'backoffice.services-additionnels.create')
-    ->name('services-additionnels.create');
-
-Route::view('/services-additionnels/{id}/edit', 'backoffice.services-additionnels.edit')
-    ->name('services-additionnels.edit');
-
-Route::view('/services-additionnels/statistics', 'backoffice.services-additionnels.statistics')
-    ->name('services-additionnels.statistics');
+Route::get('/services-additionnels/statistics', [ServiceController::class, 'statistics'])->name('services-additionnels.statistics');
 
 Route::prefix('guest')
     ->name('guest.')
@@ -82,4 +81,16 @@ Route::prefix('guest')
         Route::view('/emergency', 'guest.emergency')
             ->name('emergency');
 
+        // Guest Services Routes
+        Route::prefix('services')
+            ->name('services.')
+            ->group(function () {
+                Route::get('/', [GuestServiceController::class, 'index'])->name('index');
+                Route::get('/{service}', [GuestServiceController::class, 'show'])->name('show');
+                Route::get('/{service}/checkout', [GuestServiceController::class, 'checkout'])->name('checkout');
+                Route::post('/{service}/checkout', [GuestServiceController::class, 'processCheckout'])->name('checkout.process');
+                Route::get('/confirmation/{sale}', [GuestServiceController::class, 'confirmation'])->name('confirmation');
+                Route::get('/{service}/review', [GuestServiceController::class, 'reviewForm'])->name('review');
+                Route::post('/{service}/review', [GuestServiceController::class, 'submitReview'])->name('review.submit');
+            });
     });
