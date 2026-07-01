@@ -28,6 +28,9 @@ update_env DB_PASSWORD root
 update_env REDIS_HOST redis
 update_env REDIS_PASSWORD null
 update_env REDIS_PORT 6379
+update_env VITE_HOST 0.0.0.0
+update_env VITE_PORT 5173
+update_env VITE_URL http://localhost:5173
 
 if [ -z "$(grep '^APP_KEY=' .env | cut -d'=' -f2)" ]; then
   php artisan key:generate --force
