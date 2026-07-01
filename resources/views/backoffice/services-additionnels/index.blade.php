@@ -8,28 +8,52 @@
                 <p class="text-gray-500 mt-1">Gérez les services complémentaires proposés à vos clients</p>
             </div>
             <div class="flex gap-3">
-                <a href="{{ route('services-additionnels.statistics') }}" class="border border-gray-300 text-gray-700 px-6 py-2 rounded-xl font-medium hover:bg-gray-50 inline-block">
+                <x-ui.button as="a" href="{{ route('services-additionnels.statistics') }}" variant="secondary">
                     Statistiques
-                </a>
-                <a href="{{ route('services-additionnels.create') }}" class="bg-sky-600 text-white px-6 py-2 rounded-xl font-medium hover:bg-sky-700 inline-block">
+                </x-ui.button>
+                <x-ui.button as="a" href="{{ route('services-additionnels.create') }}">
                     Ajouter un service
-                </a>
+                </x-ui.button>
             </div>
         </div>
 
         <x-ui.card class="p-6">
+            <div class="mb-6 flex items-center gap-4">
+                <div class="w-64">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Filtrer par catégorie</label>
+                    <form method="GET" id="filter-form">
+                        <select name="category" id="category-filter" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500" onchange="document.getElementById('filter-form').submit()">
+                            <option value="">Toutes les catégories</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category }}" {{ request('category') === $category ? 'selected' : '' }}>
+                                    {{ $category }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
+                </div>
+            </div>
+
             @if($services->isEmpty())
                 <div class="text-center py-12">
                     <p class="text-gray-500">Aucun service n'a été créé pour le moment.</p>
-                    <a href="{{ route('services-additionnels.create') }}" class="mt-4 inline-block bg-sky-600 text-white px-6 py-2 rounded-xl font-medium hover:bg-sky-700">
+                    <x-ui.button as="a" href="{{ route('services-additionnels.create') }}" class="mt-4">
                         Créer mon premier service
-                    </a>
+                    </x-ui.button>
                 </div>
             @else
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach($services as $service)
                         <a href="{{ route('services-additionnels.show', $service) }}" class="border border-gray-200 rounded-2xl p-5 hover:shadow-md transition-shadow block">
-                            <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm mb-3">{{ $service->category }}</span>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">{{ $service->category }}</span>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $service->is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    {{ $service->is_active ? 'Actif' : 'Inactif' }}
+                                </span>
+                            </div>
+                            @if($service->photo)
+                                <img src="{{ asset('storage/' . $service->photo) }}" alt="{{ $service->name }}" class="w-full h-40 object-cover rounded-xl mb-4">
+                            @endif
                             <h3 class="text-xl font-semibold">{{ $service->name }}</h3>
                             <p class="text-gray-500 mt-2">{{ $service->description }}</p>
                             <div class="mt-4 flex items-center justify-between">

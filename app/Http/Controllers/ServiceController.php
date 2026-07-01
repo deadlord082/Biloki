@@ -9,10 +9,18 @@ use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $services = Service::all();
-        return view('backoffice.services-additionnels.index', compact('services'));
+        $query = Service::query();
+
+        if ($request->has('category') && $request->category) {
+            $query->where('category', $request->category);
+        }
+
+        $services = $query->get();
+        $categories = Service::distinct()->pluck('category');
+
+        return view('backoffice.services-additionnels.index', compact('services', 'categories'));
     }
 
     public function show(Service $service)
@@ -30,15 +38,26 @@ class ServiceController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'photo' => 'nullable|image|max:2048',
             'price' => 'required|numeric|min:0',
             'pricing_mode' => 'required|string',
             'category' => 'required|string',
-            'is_active' => 'required',
+            'is_active' => 'boolean',
+            'accommodations' => 'array',
         ]);
 
-        $request->merge(['is_active' => $request->has('is_active') ?? true]);
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
 
-        Service::create($request->all());
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('services', 'public');
+        }
+
+        $service = Service::create($data);
+
+        if ($request->has('accommodations')) {
+            $service->accommodations()->sync($request->accommodations);
+        }
 
         return redirect()->route('services-additionnels.index')->with('success', 'Service créé avec succès!');
     }
@@ -50,18 +69,37 @@ class ServiceController extends Controller
 
     public function update(Request $request, Service $service)
     {
+        // Check if it's just a status toggle
+        if ($request->has('is_active') && !$request->has('name')) {
+            $service->is_active = $request->is_active;
+            $service->save();
+            return back()->with('success', 'Statut du service mis à jour avec succès!');
+        }
+
+        // Regular full update
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'photo' => 'nullable|image|max:2048',
             'price' => 'required|numeric|min:0',
             'pricing_mode' => 'required|string',
             'category' => 'required|string',
-            'is_active' => 'required',
+            'is_active' => 'boolean',
+            'accommodations' => 'array',
         ]);
 
-        $request->merge(['is_active' => $request->has('is_active') ?? true]);
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
 
-        $service->update($request->all());
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('services', 'public');
+        }
+
+        $service->update($data);
+
+        if ($request->has('accommodations')) {
+            $service->accommodations()->sync($request->accommodations);
+        }
 
         return redirect()->route('services-additionnels.index')->with('success', 'Service mis à jour avec succès!');
     }

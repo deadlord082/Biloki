@@ -20,7 +20,7 @@
                 <x-ui.card class="p-6">
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-xl font-semibold">Informations générales</h2>
-                        <a href="{{ route('services-additionnels.edit', $service) }}" class="text-sky-600 hover:text-sky-700 font-medium">Modifier</a>
+                        <x-ui.button as="a" href="{{ route('services-additionnels.edit', $service) }}" variant="ghost">Modifier</x-ui.button>
                     </div>
                     <div class="space-y-4">
                         <div>
@@ -71,28 +71,27 @@
                 <x-ui.card class="p-6">
                     <h2 class="text-xl font-semibold mb-6">Actions</h2>
                     <div class="space-y-3">
-                        <a href="{{ route('services-additionnels.edit', $service) }}" class="w-full bg-sky-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-sky-700 block text-center">
+                        <x-ui.button as="a" href="{{ route('services-additionnels.edit', $service) }}" class="w-full">
                             Modifier le service
-                        </a>
+                        </x-ui.button>
                         <form action="{{ route('services-additionnels.update', $service) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="is_active" value="{{ $service->is_active ? 0 : 1 }}">
-                            <button type="submit" class="w-full border border-gray-300 text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-gray-50">
+                            <x-ui.button type="submit" variant="secondary" class="w-full">
                                 {{ $service->is_active ? 'Désactiver' : 'Activer' }}
-                            </button>
+                            </x-ui.button>
                         </form>
                         <form action="{{ route('services-additionnels.destroy', $service) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce service ?');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="w-full border border-red-300 text-red-600 px-6 py-3 rounded-xl font-medium hover:bg-red-50">
+                            <x-ui.button type="submit" variant="danger" class="w-full">
                                 Supprimer
-                            </button>
+                            </x-ui.button>
                         </form>
                     </div>
                 </x-ui.card>
             </div>
-
         </div>
 
     </div>

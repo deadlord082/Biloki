@@ -1,8 +1,12 @@
 <x-layouts.guest>
     <div class="min-h-screen bg-[#f5f5f5]">
         <div class="relative">
-            <div class="h-64 bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center">
-                <span class="text-6xl">🏨</span>
+            <div class="h-64 bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center overflow-hidden">
+                @if($service->photo)
+                    <img src="{{ asset('storage/' . $service->photo) }}" alt="{{ $service->name }}" class="w-full h-full object-cover">
+                @else
+                    <span class="text-6xl">🏨</span>
+                @endif
             </div>
             <a href="{{ route('guest.services.index') }}" class="absolute top-6 left-6 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -15,16 +15,16 @@
                 </div>
             </div>
             <div class="flex gap-3">
-                <a href="{{ route('services-additionnels.index') }}" class="border border-gray-300 text-gray-700 px-5 py-2 rounded-xl font-medium hover:bg-gray-50 inline-block">
+                <x-ui.button as="a" href="{{ route('services-additionnels.index') }}" variant="secondary">
                     Annuler
-                </a>
-                <button type="submit" form="edit-service-form" class="bg-sky-600 text-white px-5 py-2 rounded-xl font-medium hover:bg-sky-700">
+                </x-ui.button>
+                <x-ui.button type="submit" form="edit-service-form">
                     Mettre à jour
-                </button>
+                </x-ui.button>
             </div>
         </div>
 
-        <form id="edit-service-form" action="{{ route('services-additionnels.update', $service) }}" method="POST" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <form id="edit-service-form" action="{{ route('services-additionnels.update', $service) }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             @csrf
             @method('PUT')
 
@@ -39,6 +39,15 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
                             <textarea name="description" rows="4" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500">{{ old('description', $service->description) }}</textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Photo du service</label>
+                            @if($service->photo)
+                                <div class="mb-3">
+                                    <img src="{{ asset('storage/' . $service->photo) }}" alt="Photo du service" class="h-32 rounded-xl object-cover">
+                                </div>
+                            @endif
+                            <input type="file" name="photo" accept="image/*" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500">
                         </div>
                     </div>
                 </x-ui.card>
@@ -78,7 +87,27 @@
                 </x-ui.card>
 
                 <x-ui.card class="p-6">
-                    <h2 class="text-xl font-semibold mb-6">Disponibilité</h2>
+                    <h2 class="text-xl font-semibold mb-6">Logements associés</h2>
+                    <p class="text-gray-500 text-sm mb-6">Choisissez pour quel(s) logement(s) ce service est disponible. Laissez vide pour tous les logements.</p>
+                    <div class="space-y-3">
+                        {{-- We'll use dummy accommodations for now since we haven't seeded the DB --}}
+                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl hover:bg-gray-50 cursor-pointer">
+                            <input type="checkbox" name="accommodations[]" value="1" class="w-5 h-5 rounded border-gray-300 text-sky-600 focus:ring-sky-500">
+                            <span class="font-medium">Tous les logements</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl hover:bg-gray-50 cursor-pointer">
+                            <input type="checkbox" name="accommodations[]" value="2" class="w-5 h-5 rounded border-gray-300 text-sky-600 focus:ring-sky-500">
+                            <span class="font-medium">Appartement Vieux-Port</span>
+                        </label>
+                        <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl hover:bg-gray-50 cursor-pointer">
+                            <input type="checkbox" name="accommodations[]" value="3" class="w-5 h-5 rounded border-gray-300 text-sky-600 focus:ring-sky-500">
+                            <span class="font-medium">Studio Bastille</span>
+                        </label>
+                    </div>
+                </x-ui.card>
+
+                <x-ui.card class="p-6">
+                    <h2 class="text-xl font-semibold mb-6">Statut</h2>
                     <div class="space-y-4">
                         <div class="flex items-center gap-3">
                             <input type="checkbox" id="is_active" name="is_active" {{ old('is_active', $service->is_active) ? 'checked' : '' }} class="w-5 h-5 rounded border-gray-300 text-sky-600 focus:ring-sky-500">

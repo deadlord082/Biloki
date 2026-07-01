@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Service extends Model
 {
@@ -13,6 +14,7 @@ class Service extends Model
     protected $fillable = [
         'name',
         'description',
+        'photo',
         'price',
         'pricing_mode',
         'category',
@@ -32,5 +34,10 @@ class Service extends Model
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function accommodations(): BelongsToMany
+    {
+        return $this->belongsToMany(Accommodation::class);
     }
 }

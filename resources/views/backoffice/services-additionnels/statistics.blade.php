@@ -15,7 +15,9 @@
                 </div>
             </div>
             <div class="flex gap-3">
-                <a href="{{ route('services-additionnels.index') }}" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-xl text-sm hover:bg-gray-50 inline-block">Voir le catalogue</a>
+                <x-ui.button as="a" href="{{ route('services-additionnels.index') }}" variant="secondary" size="sm">
+                    Voir le catalogue
+                </x-ui.button>
             </div>
         </div>
 
