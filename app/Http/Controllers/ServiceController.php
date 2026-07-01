@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use App\Models\ServiceImage;
 use App\Models\ServiceSale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Service::query();
+        $query = Service::with('images');
 
         if ($request->has('category') && $request->category) {
             $query->where('category', $request->category);
@@ -25,6 +27,7 @@ class ServiceController extends Controller
 
     public function show(Service $service)
     {
+        $service->load('images');
         return view('backoffice.services-additionnels.show', compact('service'));
     }
 
@@ -38,7 +41,7 @@ class ServiceController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'photo' => 'nullable|image|max:2048',
+            'images.*' => 'nullable|image|max:2048',
             'price' => 'required|numeric|min:0',
             'pricing_mode' => 'required|string',
             'category' => 'required|string',
@@ -49,14 +52,20 @@ class ServiceController extends Controller
         $data = $request->all();
         $data['is_active'] = $request->has('is_active');
 
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('services', 'public');
-        }
-
         $service = Service::create($data);
 
         if ($request->has('accommodations')) {
             $service->accommodations()->sync($request->accommodations);
+        }
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $image) {
+                $path = $image->store('services', 'public');
+                $service->images()->create([
+                    'image_path' => $path,
+                    'order' => $index,
+                ]);
+            }
         }
 
         return redirect()->route('services-additionnels.index')->with('success', 'Service créé avec succès!');
@@ -64,6 +73,7 @@ class ServiceController extends Controller
 
     public function edit(Service $service)
     {
+        $service->load('images');
         return view('backoffice.services-additionnels.edit', compact('service'));
     }
 
@@ -80,7 +90,7 @@ class ServiceController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'photo' => 'nullable|image|max:2048',
+            'images.*' => 'nullable|image|max:2048',
             'price' => 'required|numeric|min:0',
             'pricing_mode' => 'required|string',
             'category' => 'required|string',
@@ -91,14 +101,21 @@ class ServiceController extends Controller
         $data = $request->all();
         $data['is_active'] = $request->has('is_active');
 
-        if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('services', 'public');
-        }
-
         $service->update($data);
 
         if ($request->has('accommodations')) {
             $service->accommodations()->sync($request->accommodations);
+        }
+
+        if ($request->hasFile('images')) {
+            $currentMaxOrder = $service->images()->max('order') ?? 0;
+            foreach ($request->file('images') as $index => $image) {
+                $path = $image->store('services', 'public');
+                $service->images()->create([
+                    'image_path' => $path,
+                    'order' => $currentMaxOrder + $index + 1,
+                ]);
+            }
         }
 
         return redirect()->route('services-additionnels.index')->with('success', 'Service mis à jour avec succès!');
@@ -106,8 +123,18 @@ class ServiceController extends Controller
 
     public function destroy(Service $service)
     {
+        foreach ($service->images as $image) {
+            Storage::disk('public')->delete($image->image_path);
+        }
         $service->delete();
         return redirect()->route('services-additionnels.index')->with('success', 'Service supprimé avec succès!');
+    }
+
+    public function destroyImage(Service $service, ServiceImage $image)
+    {
+        Storage::disk('public')->delete($image->image_path);
+        $image->delete();
+        return back()->with('success', 'Image supprimée avec succès!');
     }
 
     public function statistics()

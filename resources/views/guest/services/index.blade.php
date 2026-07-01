@@ -21,7 +21,9 @@
             <div class="space-y-4">
                 @foreach($services as $service)
                     <a href="{{ route('guest.services.show', $service) }}" class="bg-white rounded-3xl overflow-hidden shadow-sm block hover:shadow-md transition">
-                        @if($service->photo)
+                        @if($service->images->count() > 0)
+                            <img src="{{ $service->images->first()->image_url }}" alt="{{ $service->name }}" class="w-full h-40 object-cover">
+                        @elseif($service->photo)
                             <img src="{{ asset('storage/' . $service->photo) }}" alt="{{ $service->name }}" class="w-full h-40 object-cover">
                         @endif
                         <div class="p-5">

@@ -41,13 +41,27 @@
                             <textarea name="description" rows="4" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500">{{ old('description', $service->description) }}</textarea>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Photo du service</label>
-                            @if($service->photo)
-                                <div class="mb-3">
-                                    <img src="{{ asset('storage/' . $service->photo) }}" alt="Photo du service" class="h-32 rounded-xl object-cover">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Photos du service</label>
+                            @if($service->images->count() > 0)
+                                <div class="grid grid-cols-3 gap-3 mb-3">
+                                    @foreach($service->images as $image)
+                                        <div class="relative group">
+                                            <img src="{{ $image->image_url }}" alt="" class="w-full h-32 object-cover rounded-xl">
+                                            <form action="{{ route('services-additionnels.images.destroy', ['service' => $service, 'image' => $image]) }}" method="POST" class="absolute top-1 right-1">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @endforeach
                                 </div>
                             @endif
-                            <input type="file" name="photo" accept="image/*" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                            <input type="file" name="images[]" multiple accept="image/*" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                            <p class="text-xs text-gray-500 mt-1">Vous pouvez ajouter plusieurs images</p>
                         </div>
                     </div>
                 </x-ui.card>

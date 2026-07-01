@@ -40,4 +40,9 @@ class Service extends Model
     {
         return $this->belongsToMany(Accommodation::class);
     }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ServiceImage::class)->orderBy('order');
+    }
 }

@@ -31,6 +31,12 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
                             <p class="text-gray-600">{{ $service->description }}</p>
                         </div>
+                        @if($service->images->count() > 0)
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Photos</label>
+                                <x-ui.carousel :images="$service->images->map(fn($img) => ['url' => $img->image_url, 'alt' => $service->name])" height="300px" />
+                            </div>
+                        @endif
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Prix</label>
                             <p class="text-2xl font-bold text-sky-600">{{ $service->price }} €</p>

@@ -52,6 +52,7 @@ Route::resource('services-additionnels', ServiceController::class)
     ]);
 
 Route::get('/services-additionnels/statistics', [ServiceController::class, 'statistics'])->name('services-additionnels.statistics');
+Route::delete('/services-additionnels/{service}/images/{image}', [ServiceController::class, 'destroyImage'])->name('services-additionnels.images.destroy');
 
 Route::prefix('guest')
     ->name('guest.')

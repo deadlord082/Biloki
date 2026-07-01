@@ -86,11 +86,11 @@ $menu = [
 
 @endphp
 
-<aside class="w-72 bg-white border-r flex flex-col">
+<aside class="w-72 bg-white border-r flex flex-col h-full">
 
     {{-- Logo --}}
 
-    <div class="p-6">
+    <div class="p-6 shrink-0">
 
         <div class="flex items-center gap-4">
 
@@ -115,9 +115,7 @@ $menu = [
 
     </div>
 
-    <nav class="px-5 space-y-3">
-
-    <nav class="px-5 space-y-3">
+    <nav class="px-5 space-y-3 overflow-y-auto flex-1 pb-6">
         
         @foreach($menu as $item)
             <x-sidebar-item

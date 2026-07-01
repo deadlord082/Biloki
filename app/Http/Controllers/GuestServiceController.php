@@ -13,12 +13,13 @@ class GuestServiceController extends Controller
 {
     public function index()
     {
-        $services = Service::where('is_active', true)->get();
+        $services = Service::with('images')->where('is_active', true)->get();
         return view('guest.services.index', compact('services'));
     }
 
     public function show(Service $service)
     {
+        $service->load('images');
         $reviews = $service->reviews()->latest()->get();
         $averageRating = $service->reviews()->avg('rating') ?? 0;
         return view('guest.services.show', compact('service', 'reviews', 'averageRating'));

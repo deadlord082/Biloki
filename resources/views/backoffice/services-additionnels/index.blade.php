@@ -51,7 +51,9 @@
                                     {{ $service->is_active ? 'Actif' : 'Inactif' }}
                                 </span>
                             </div>
-                            @if($service->photo)
+                            @if($service->images->count() > 0)
+                                <img src="{{ $service->images->first()->image_url }}" alt="{{ $service->name }}" class="w-full h-40 object-cover rounded-xl mb-4">
+                            @elseif($service->photo)
                                 <img src="{{ asset('storage/' . $service->photo) }}" alt="{{ $service->name }}" class="w-full h-40 object-cover rounded-xl mb-4">
                             @endif
                             <h3 class="text-xl font-semibold">{{ $service->name }}</h3>

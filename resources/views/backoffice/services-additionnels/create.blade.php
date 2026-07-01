@@ -40,8 +40,9 @@
                             <textarea name="description" rows="4" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500" placeholder="Décrivez ce que propose le service..."></textarea>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Photo du service</label>
-                            <input type="file" name="photo" accept="image/*" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Photos du service</label>
+                            <input type="file" name="images[]" multiple accept="image/*" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                            <p class="text-xs text-gray-500 mt-1">Vous pouvez ajouter plusieurs images</p>
                         </div>
                     </div>
                 </x-ui.card>
